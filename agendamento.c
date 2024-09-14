@@ -1,14 +1,34 @@
 #include <stdio.h>
 
+#define MAX_AGENDAMENTO 8
+
 typedef struct {
     char nome[50];
     char data[11];
     char horario[6];
 }Agendamento;
 
+Agendamento agendamento[MAX_AGENDAMENTO];
+
+void agendar() {
+    if (totalAgendamento >= MAX_AGENDAMENTO){
+        printf("Nao tem horario disponivel!\n");
+        return;
+    }
+
+    Agendamento novoAgendamento;
+
+    printf("Nome: ");
+    scanf("%[^\n]", novoAgendamento.nome);
+    printf("Data: ");
+    scanf("%s", &novoAgendamento.data);
+    printf("Horario: ");
+    scanf("%s", &novoAgendamento.horario);
+}
 
 int main() {
     int opcao;
+    int totalAgengamento;
 
     do
     {
