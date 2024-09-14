@@ -14,20 +14,32 @@ int main() {
     {
         printf(" Agendamento CodeCortes \n");
         printf("1 - Agendar\n");
-        printf("2 - Vizualizar agendamento\n");
-        printf("3 - Deletar agendamento\n");
+        printf("2 - Horarios disponiveis\n");
+        printf("3 - Cancelar agendamento\n");
         printf("4 - Sair\n");
+        printf("Digite uma opcao: ");
         scanf("%d", &opcao);
 
         switch (opcao)
         {
         case 1:
-            /* code */
+            agendar();
+            break;
+        case 2:
+            horariosDisponiveis();
+            break;
+        case 3:
+            cancelarAgendamento();
+            break;
+        case 4:
+            printf("Saindo...\n");
             break;
         
         default:
-            break;
+            printf("Opcao invalida, tente novamente!\n");
         }
-    } while (opcao =! 4);
+    } while (opcao != 4);
+
+    return 0;
     
 }
