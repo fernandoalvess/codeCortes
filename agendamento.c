@@ -5,16 +5,16 @@
 #define MAX_AGENDAMENTO 8
 
 typedef struct {
-    char nome[50];
-    char horario[6]; //hh:mm
+    char *nome;
+    char *horario; //hh:mm
 }Agendamento;
 
-Agendamento agendamento[MAX_AGENDAMENTO];
+Agendamento *agendamentos[MAX_AGENDAMENTO];
 int totalAgendamento = 0;
 
-int verificarAgenda(char *horario, int totalAgendamento) {
+int verificarAgenda(char *horario) {
     for(int  i = 0; i <= totalAgendamento; i++) {
-        if(agendamento[i].horario == 0) {
+        if( strcmp (agendamentos[i]->horario, horario) == 0) {
             return 0; // horario ocupado
         }
     }
@@ -27,19 +27,26 @@ void agendar() {
         return;
     }
 
-    Agendamento novoAgendamento;
+    Agendamento *novoAgendamento = (Agendamento*)malloc(sizeof(Agendamento));
+
+    novoAgendamento->nome = (char*)malloc(50 * sizeof (char));
+    novoAgendamento->horario = (char*)malloc(6 * sizeof (char));
 
     printf("Nome: ");
-    scanf("%[^\n]", novoAgendamento.nome);
+    scanf("%s", novoAgendamento->nome);
     printf("Horario: ");
-    scanf("%s", novoAgendamento.horario);
+    scanf("%s", novoAgendamento->horario);
 
-    if ( verificarAgenda(novoAgendamento.horario, totalAgendamento)){
-        agendamento[totalAgendamento++] = novoAgendamento;
+    if ( verificarAgenda(novoAgendamento->horario)){
+        agendamentos[totalAgendamento++] = novoAgendamento;
         printf("Agendamento realizado!\n");
     } else {
         printf("Ops! Esse horario não esta disponivel :(\n");
     }
+
+    free(novoAgendamento->nome);
+    free(novoAgendamento->horario);
+    free(novoAgendamento);
 }
 
 
