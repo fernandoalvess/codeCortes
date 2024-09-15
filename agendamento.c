@@ -22,7 +22,7 @@ int verificarAgenda(char *horario) {
     return 1; // horario disponivel
 }
 void agendar() {
-    if (totalAgendamento >= MAX_AGENDAMENTO){
+    if (totalAgendamento > MAX_AGENDAMENTO){
         printf("Nao tem horario disponivel!\n");
         return;
     }
@@ -47,6 +47,7 @@ void agendar() {
     free(novoAgendamento->nome);
     free(novoAgendamento->horario);
     free(novoAgendamento);
+    return;
 }
 
 void cortesAgendados() {
@@ -59,6 +60,7 @@ void cortesAgendados() {
     for (int i = 0; i < totalAgendamento; i++){
         printf("%d - Nome: %s. Horario: %s\n", i+1, agendamentos[i]->nome, agendamentos[i]->horario);
     }
+    return;
 }
 
 void cancelarAgendamento() {
@@ -84,6 +86,7 @@ void cancelarAgendamento() {
         
     }
     printf("Nenhum agendamento encontrado com esse nome!\n");
+    return;
 }
 
 int main() {
