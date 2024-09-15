@@ -61,7 +61,30 @@ void cortesAgendados() {
     }
 }
 
+void cancelarAgendamento() {
+    char nome[50];
+    printf("Digite nome do clinete para cancelar o agendamento:\n");
+    scanf("%s", nome);
 
+    for (int  i = 0; i < totalAgendamento; i++) {
+        if(strcmp(agendamentos[i]->nome, nome) == 0) {
+            free(agendamentos[i]->nome);
+            free(agendamentos[i]->horario);
+            free(agendamentos[i]);
+
+                //realocando os agendamentos
+            for (int j = 0; j < totalAgendamento -1; j++) {
+                agendamentos[j] = agendamentos[j+1];
+            }
+
+            totalAgendamento--;
+            printf("Agendamento foi cancelado!");
+            return;
+        }
+        
+    }
+    printf("Nenhum agendamento encontrado com esse nome!\n");
+}
 
 int main() {
     int opcao;
@@ -85,7 +108,7 @@ int main() {
             cortesAgendados();
             break;
         case 3:
-            //cancelarAgendamento();
+            cancelarAgendamento();
             break;
         case 4:
             printf("Saindo...\n");
