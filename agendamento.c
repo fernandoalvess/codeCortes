@@ -49,6 +49,18 @@ void agendar() {
     free(novoAgendamento);
 }
 
+void cortesAgendados() {
+    if (totalAgendamento == 0) {
+        printf("Nenhum agendamento para hoje!\n");
+        return;
+    }
+
+    printf("AGENDAMENTOS DO DIA:\n");
+    for (int i = 0; i < totalAgendamento; i++){
+        printf("%d - Nome: %s. Horario: %s\n", i+1, agendamentos[i]->nome, agendamentos[i]->horario);
+    }
+}
+
 
 
 int main() {
@@ -57,8 +69,8 @@ int main() {
     do
     {
         printf(" Agendamento CodeCortes \n");
-        printf("1 - Agendar\n");
-        printf("2 - Horarios disponiveis\n");
+        printf("1 - Agendar corte\n");
+        printf("2 - Agendamentos do dia\n");
         printf("3 - Cancelar agendamento\n");
         printf("4 - Sair\n");
         printf("Digite uma opcao: ");
@@ -70,7 +82,7 @@ int main() {
             agendar();
             break;
         case 2:
-            //horariosDisponiveis();
+            cortesAgendados();
             break;
         case 3:
             //cancelarAgendamento();
