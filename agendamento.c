@@ -13,7 +13,7 @@ Agendamento *agendamentos[MAX_AGENDAMENTO];
 int totalAgendamento = 0;
 
 int verificarAgenda(char *horario) {
-    for(int  i = 0; i <= totalAgendamento; i++) {
+    for(int  i = 0; i < totalAgendamento; i++) {
         if( strcmp (agendamentos[i]->horario, horario) == 0) {
             return 0; // horario ocupado
         }
@@ -22,7 +22,7 @@ int verificarAgenda(char *horario) {
     return 1; // horario disponivel
 }
 void agendar() {
-    if (totalAgendamento > MAX_AGENDAMENTO){
+    if (totalAgendamento >= MAX_AGENDAMENTO){
         printf("Nao tem horario disponivel!\n");
         return;
     }
@@ -33,21 +33,25 @@ void agendar() {
     novoAgendamento->horario = (char*)malloc(6 * sizeof (char));
 
     printf("Nome: ");
-    scanf("%s", novoAgendamento->nome);
+    scanf("%49s", novoAgendamento->nome);
     printf("Horario: ");
-    scanf("%s", novoAgendamento->horario);
+    scanf("%5s", novoAgendamento->horario);
 
     if ( verificarAgenda(novoAgendamento->horario)){
-        agendamentos[totalAgendamento++] = novoAgendamento;
+        agendamentos[totalAgendamento] = (Agendamento*)malloc(sizeof(Agendamento));
+        agendamentos[totalAgendamento]->nome = novoAgendamento->nome;
+        agendamentos[totalAgendamento]->horario = novoAgendamento->horario;
+        totalAgendamento++;
         printf("Agendamento realizado!\n");
     } else {
-        printf("Ops! Esse horario não esta disponivel :(\n");
+        printf("Ops! Esse horario nao esta disponivel :(\n");
+        free(novoAgendamento->nome);
+        free(novoAgendamento->horario);
     }
 
-    free(novoAgendamento->nome);
-    free(novoAgendamento->horario);
+    
     free(novoAgendamento);
-    return;
+
 }
 
 void cortesAgendados() {
@@ -58,13 +62,19 @@ void cortesAgendados() {
 
     printf("AGENDAMENTOS DO DIA:\n");
     for (int i = 0; i < totalAgendamento; i++){
-        printf("%d - Nome: %s. Horario: %s\n", i+1, agendamentos[i]->nome, agendamentos[i]->horario);
+        printf("%d - Nome: %s Horario: %s\n", i+1, agendamentos[i]->nome, agendamentos[i]->horario);
     }
     return;
 }
 
 void cancelarAgendamento() {
     char nome[50];
+
+    if (totalAgendamento == 0) {
+        printf("Nenhum agendamento para hoje!\n");
+        return;
+    }
+    
     printf("Digite nome do clinete para cancelar o agendamento:\n");
     scanf("%s", nome);
 
@@ -75,12 +85,12 @@ void cancelarAgendamento() {
             free(agendamentos[i]);
 
                 //realocando os agendamentos
-            for (int j = 0; j < totalAgendamento -1; j++) {
+            for (int j = i; j < totalAgendamento -1; j++) {
                 agendamentos[j] = agendamentos[j+1];
             }
 
             totalAgendamento--;
-            printf("Agendamento foi cancelado!");
+            printf("Agendamento foi cancelado!\n");
             return;
         }
         
