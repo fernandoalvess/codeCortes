@@ -25,7 +25,7 @@ int verificarAgenda(char *horario) {
     return 1; // horario disponivel
 }
 void agendar() {
-    if (totalAgendamento >= MAX_AGENDAMENTO){
+    if (totalAgendamento >= 8){
         printf("Nao tem horario disponivel!\n");
         return;
     }
@@ -40,10 +40,10 @@ void agendar() {
     printf("Horario: ");
     scanf("%5s", novoAgendamento->horario);
 
+    // para verificar se o hoarario esta livre
     if ( verificarAgenda(novoAgendamento->horario)){
-        agendamentos[totalAgendamento] = (Agendamento*)malloc(sizeof(Agendamento));
-        agendamentos[totalAgendamento]->nome = novoAgendamento->nome;
-        agendamentos[totalAgendamento]->horario = novoAgendamento->horario;
+        novoAgendamento->proximo = cliente; //vai inserir novo agendamento
+        cliente = novoAgendamento; // atualiza a lista encadeada
         totalAgendamento++;
         printf("Agendamento realizado!\n");
     } else {
