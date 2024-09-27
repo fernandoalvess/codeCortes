@@ -14,12 +14,12 @@ Agendamento *cliente = NULL; // ponteiro para o inicio da lista
 int totalAgendamento = 0;
 
 int verificarAgenda(char *horario) {
-    Agendamento *agenda = cliente;
-    while (agenda != NULL) {
-        if( strcmp (agenda->horario, horario) == 0) {
+    Agendamento *hora = cliente;
+    while (hora != NULL) {
+        if( strcmp (hora->horario, horario) == 0) {
             return 0; // horario ocupado
         }
-        agenda = agenda->proximo;
+        hora = hora->proximo;
     }
 
     return 1; // horario disponivel
@@ -63,11 +63,14 @@ void cortesAgendados() {
         return;
     }
 
+    Agendamento *hora = cliente;
     printf("AGENDAMENTOS DO DIA:\n");
-    for (int i = 0; i < totalAgendamento; i++){
-        printf("%d - Nome: %s Horario: %s\n", i+1, agendamentos[i]->nome, agendamentos[i]->horario);
+    int i = 1;
+    while (hora != NULL)
+    {
+        printf("%d - Nome: %s Horario: %s\n", i++, hora->nome, hora->horario);
+        hora = hora->proximo;
     }
-    return;
 }
 
 void cancelarAgendamento() {
