@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-//#define MAX_AGENDAMENTO 8
 
 typedef struct {
     char *nome;
@@ -25,23 +24,27 @@ int verificarAgenda(char *horario) {
     return 1; // horario disponivel
 }
 void agendar() {
-    if (totalAgendamento >= 8){
-        printf("Nao tem horario disponivel!\n");
-        return;
-    }
-
     Agendamento *novoAgendamento = (Agendamento*)malloc(sizeof(Agendamento));
 
-    novoAgendamento->nome = (char*)malloc(50 * sizeof (char));
-    novoAgendamento->horario = (char*)malloc(6 * sizeof (char));
+    //para alocar nome e horario
+    novoAgendamento->nome = (char *)malloc(50 * sizeof (char));
+    novoAgendamento->horario = (char *)malloc(6 * sizeof (char));
+
+    //variavel temporaria
+    char nomeTemp[50];
+    char horarioTemp[6];
 
     printf("Nome: ");
-    scanf("%49s", novoAgendamento->nome);
+    scanf("%49s", nomeTemp);
     printf("Horario: ");
-    scanf("%5s", novoAgendamento->horario);
+    scanf("%5s", horarioTemp);
 
     // para verificar se o hoarario esta livre
     if ( verificarAgenda(novoAgendamento->horario)){
+        //copia para as pocições corretas
+        strcpy(novoAgendamento->nome, nomeTemp);
+        strcpy(novoAgendamento->horario, horarioTemp);
+
         novoAgendamento->proximo = cliente; //vai inserir novo agendamento
         cliente = novoAgendamento; // atualiza a lista encadeada
         totalAgendamento++;
@@ -50,10 +53,8 @@ void agendar() {
         printf("Ops! Esse horario nao esta disponivel :(\n");
         free(novoAgendamento->nome);
         free(novoAgendamento->horario);
+        free(novoAgendamento);
     }
-
-    
-    free(novoAgendamento);
 
 }
 
@@ -68,8 +69,9 @@ void cortesAgendados() {
     int i = 1;
     while (agenda != NULL)
     {
-        printf("%d - Nome: %s Horario: %s\n", i++, agenda->nome, agenda->horario);
-        agenda = agenda->proximo;
+        printf("%d - Nome: %s Horario: %s\n", i, agenda->nome, agenda->horario);
+        i++;
+        agenda = agenda->proximo; // vai para o proximo agendado
     }
 }
 
