@@ -34,6 +34,7 @@ void agendar() {
     char nomeTemp[50];
     char horarioTemp[6];
 
+    printf("AGENDE SEU MOMENTO\n");
     printf("Nome: ");
     scanf("%49s", nomeTemp);
     printf("Horario: ");
@@ -48,7 +49,7 @@ void agendar() {
         novoAgendamento->proximo = cliente; //vai inserir novo agendamento
         cliente = novoAgendamento; // atualiza a lista encadeada
         totalAgendamento++;
-        printf("Agendamento realizado!\n");
+        printf("Agendamento foi realizado!\n");
     } else {
         printf("Ops! Esse horario nao esta disponivel :(\n");
         free(novoAgendamento->nome);
@@ -60,7 +61,7 @@ void agendar() {
 
 void cortesAgendados() {
     if (totalAgendamento == 0) {
-        printf("Nenhum agendamento para hoje!\n");
+        printf("Por enquanto, todos os horarios estao disponiveis!\n");
         return;
     }
 
@@ -69,7 +70,7 @@ void cortesAgendados() {
     int i = 1;
     while (agenda != NULL)
     {
-        printf("%d - Nome: %s Horario: %s\n", i, agenda->nome, agenda->horario);
+        printf("%d - Nome: %s | Horario: %sh\n", i, agenda->nome, agenda->horario);
         i++;
         agenda = agenda->proximo; // vai para o proximo agendado
     }
@@ -77,12 +78,12 @@ void cortesAgendados() {
 
 void cancelarAgendamento() {
     if (totalAgendamento == 0) {
-        printf("Nenhum agendamento para hoje!\n");
+        printf("Sem agendamentos para cancelar!\n");
         return;
     }
 
     char nome[50];
-    printf("Digite nome do clinete para cancelar o agendamento:\n");
+    printf("Digite nome do cliente para cancelar o agendamento:\n");
     scanf("%s", nome);
 
     Agendamento *agenda = cliente;
@@ -103,7 +104,7 @@ void cancelarAgendamento() {
             free(agenda);
 
             totalAgendamento--;
-            printf("Agendamento cancelado!\n");
+            printf("Agendamento foi cancelado!\n");
             return;
         }
         auxiliar = agenda;
@@ -130,12 +131,15 @@ int main() {
         switch (opcao)
         {
         case 1:
+            system("cls");
             agendar();
             break;
         case 2:
+            system("cls");
             cortesAgendados();
             break;
         case 3:
+            system("cls");
             cancelarAgendamento();
             break;
         case 4:
@@ -143,6 +147,7 @@ int main() {
             break;
         
         default:
+            system("cls");
             printf("Opcao invalida, tente novamente!\n");
         }
     } while (opcao != 4);
