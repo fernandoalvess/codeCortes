@@ -14,12 +14,12 @@ Agendamento *cliente = NULL; // ponteiro para o inicio da lista
 int totalAgendamento = 0;
 
 int verificarAgenda(char *horario) {
-    Agendamento *hora = cliente;
-    while (hora != NULL) {
-        if( strcmp (hora->horario, horario) == 0) {
+    Agendamento *agenda = cliente;
+    while (agenda != NULL) {
+        if( strcmp (agenda->horario, horario) == 0) {
             return 0; // horario ocupado
         }
-        hora = hora->proximo;
+        agenda = agenda->proximo;
     }
 
     return 1; // horario disponivel
@@ -63,44 +63,51 @@ void cortesAgendados() {
         return;
     }
 
-    Agendamento *hora = cliente;
+    Agendamento *agenda = cliente;
     printf("AGENDAMENTOS DO DIA:\n");
     int i = 1;
-    while (hora != NULL)
+    while (agenda != NULL)
     {
-        printf("%d - Nome: %s Horario: %s\n", i++, hora->nome, hora->horario);
-        hora = hora->proximo;
+        printf("%d - Nome: %s Horario: %s\n", i++, agenda->nome, agenda->horario);
+        agenda = agenda->proximo;
     }
 }
 
 void cancelarAgendamento() {
-    char nome[50];
-
     if (totalAgendamento == 0) {
         printf("Nenhum agendamento para hoje!\n");
         return;
     }
-    
+
+    char nome[50];
     printf("Digite nome do clinete para cancelar o agendamento:\n");
     scanf("%s", nome);
 
-    for (int  i = 0; i < totalAgendamento; i++) {
-        if(strcmp(agendamentos[i]->nome, nome) == 0) {
-            free(agendamentos[i]->nome);
-            free(agendamentos[i]->horario);
-            free(agendamentos[i]);
+    Agendamento *agenda = cliente;
+    Agendamento *auxiliar = NULL;
 
-                //realocando os agendamentos
-            for (int j = i; j < totalAgendamento -1; j++) {
-                agendamentos[j] = agendamentos[j+1];
+    while (agenda != NULL)
+    {
+        if (strcmp(agenda->nome, nome) == 0) {
+            //encontrou, agora vai remover
+            if (auxiliar == NULL)
+            {
+                cliente = agenda->proximo; // remove topo da lista
+            } else {
+                auxiliar->proximo = agenda->proximo; // remove meio ou fim
             }
+            free(agenda->nome);
+            free(agenda->horario);
+            free(agenda);
 
             totalAgendamento--;
-            printf("Agendamento foi cancelado!\n");
+            printf("Agendamento cancelado!\n");
             return;
         }
-        
+        auxiliar = agenda;
+        agenda = agenda->proximo;
     }
+    
     printf("Nenhum agendamento encontrado com esse nome!\n");
     return;
 }
