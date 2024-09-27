@@ -2,21 +2,24 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_AGENDAMENTO 8
+//#define MAX_AGENDAMENTO 8
 
 typedef struct {
     char *nome;
     char *horario; //hh:mm
+    struct Agendamento *proximo; // ponteiro para prox agendamento
 }Agendamento;
 
-Agendamento *agendamentos[MAX_AGENDAMENTO];
+Agendamento *cliente = NULL; // ponteiro para o inicio da lista
 int totalAgendamento = 0;
 
 int verificarAgenda(char *horario) {
-    for(int  i = 0; i < totalAgendamento; i++) {
-        if( strcmp (agendamentos[i]->horario, horario) == 0) {
+    Agendamento *agenda = cliente;
+    while (agenda != NULL) {
+        if( strcmp (agenda->horario, horario) == 0) {
             return 0; // horario ocupado
         }
+        agenda = agenda->proximo;
     }
 
     return 1; // horario disponivel
