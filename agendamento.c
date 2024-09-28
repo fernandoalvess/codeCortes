@@ -41,7 +41,7 @@ void agendar() {
     scanf("%5s", horarioTemp);
 
     // para verificar se o hoarario esta livre
-    if ( verificarAgenda(novoAgendamento->horario)){
+    if ( verificarAgenda(horarioTemp)){
         //copia para as pocições corretas
         strcpy(novoAgendamento->nome, nomeTemp);
         strcpy(novoAgendamento->horario, horarioTemp);
