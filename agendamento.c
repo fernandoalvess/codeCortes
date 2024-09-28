@@ -76,6 +76,40 @@ void cortesAgendados() {
     }
 }
 
+void alterarHorario() {
+    if (totalAgendamento == 0) {
+        printf("Sem agendamentos para alterar!\n");
+        return;
+    }
+
+    char nome[50];
+    char novoHorario[6];
+
+    printf("Digite o nome do cliente: ");
+    scanf("%s", nome);
+
+    Agendamento *agenda = cliente;
+
+    while (agenda != NULL) {
+        if(strcmp(agenda->nome, nome) == 0) { //nome encontrado, pede novo horario
+            printf("Digite o novo horario:\n");
+            scanf("%5s", novoHorario);
+
+            if(verificarAgenda(novoHorario))  {
+                free(agenda->horario); //libera o antigo horario
+                agenda->horario = (char *)malloc(6 * sizeof(char));
+                strcpy(agenda->horario, novoHorario);
+                printf("O horario foi alterado!\n");
+            } else {
+                printf("Ops! Esse horario nao esta disponivel :(\n");
+            }
+            return;
+        }
+        agenda = agenda->proximo;
+    }
+    printf("Nenhum agendamento encontrado com esse nome!\n");
+}
+
 void cancelarAgendamento() {
     if (totalAgendamento == 0) {
         printf("Sem agendamentos para cancelar!\n");
@@ -92,7 +126,7 @@ void cancelarAgendamento() {
     while (agenda != NULL)
     {
         if (strcmp(agenda->nome, nome) == 0) {
-            //encontrou, agora vai remover
+            //encontrou o nome, agora vai remover
             if (auxiliar == NULL)
             {
                 cliente = agenda->proximo; // remove topo da lista
@@ -141,9 +175,13 @@ int main() {
             break;
         case 3:
             system("cls");
-            cancelarAgendamento();
+            alterarHorario();
             break;
         case 4:
+            system("cls");
+            cancelarAgendamento();
+            break;
+        case 5:
             printf("Saindo...\n");
             break;
         
@@ -151,7 +189,7 @@ int main() {
             system("cls");
             printf("Opcao invalida, tente novamente!\n");
         }
-    } while (opcao != 4);
+    } while (opcao != 5);
 
     return 0;
     
