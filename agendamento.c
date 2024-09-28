@@ -123,8 +123,9 @@ int main() {
         printf(" Agendamento CodeCortes \n");
         printf("1 - Agendar corte\n");
         printf("2 - Agendamentos do dia\n");
-        printf("3 - Cancelar agendamento\n");
-        printf("4 - Sair\n");
+        printf("3 - Alterar agendamento\n");
+        printf("4 - Cancelar agendamento\n");
+        printf("5 - Sair\n");
         printf("Digite uma opcao: ");
         scanf("%d", &opcao);
 
