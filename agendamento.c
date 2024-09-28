@@ -9,16 +9,17 @@ typedef struct {
     struct Agendamento *proximo; // ponteiro para prox agendamento
 }Agendamento;
 
-Agendamento *cliente = NULL; // ponteiro para o inicio da lista
+Agendamento *cliente = NULL; // ponteiro global para o inicio da lista
 int totalAgendamento = 0;
 
+//Função para verificar se o horario esta ocupado
 int verificarAgenda(char *horario) {
-    Agendamento *agenda = cliente;
-    while (agenda != NULL) {
-        if( strcmp (agenda->horario, horario) == 0) {
+    Agendamento *agenda = cliente; //aponta para o inicio da lista
+    while (agenda != NULL) { //pecorre a lista de agendamento
+        if( strcmp (agenda->horario, horario) == 0) { //comparando o horario
             return 0; // horario ocupado
         }
-        agenda = agenda->proximo;
+        agenda = agenda->proximo; // passa para o prox agendamento
     }
 
     return 1; // horario disponivel
