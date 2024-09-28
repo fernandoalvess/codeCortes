@@ -86,7 +86,7 @@ void alterarHorario() {
     char novoHorario[6];
 
     printf("Digite o nome do cliente: ");
-    scanf("%s", nome);
+    scanf("%49s", nome);
 
     Agendamento *agenda = cliente;
 
@@ -96,8 +96,14 @@ void alterarHorario() {
             scanf("%5s", novoHorario);
 
             if(verificarAgenda(novoHorario))  {
-                free(agenda->horario); //libera o antigo horario
-                agenda->horario = (char *)malloc(6 * sizeof(char));
+                agenda->horario = (char *)realloc(agenda->horario, strlen(novoHorario) +1);
+
+                if (agenda->horario == NULL)
+                {
+                    printf("Erro para alterar horario!!!\n");
+                    return;
+                }
+                
                 strcpy(agenda->horario, novoHorario);
                 printf("O horario foi alterado!\n");
             } else {
@@ -149,6 +155,21 @@ void cancelarAgendamento() {
     return;
 }
 
+//Função para garantir a liberação da memória antes de finalizar o programa
+void liberarMemoria(){
+    Agendamento *agenda = cliente;
+
+    while (agenda != NULL) 
+    {
+        Agendamento *auxiliar = agenda;
+        agenda = agenda->proximo;
+        free(auxiliar->nome);
+        free(auxiliar->horario);
+        free(auxiliar);
+    }
+    
+}
+
 int main() {
     int opcao;
 
@@ -191,6 +212,7 @@ int main() {
         }
     } while (opcao != 5);
 
+    liberarMemoria();
     return 0;
     
 }
