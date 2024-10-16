@@ -54,6 +54,18 @@ Agendamento *inserirBST(Agendamento *raiz, Agendamento *novoAgendamento) {
     return raiz;
 }
 
+// Busca na arvore binaria de busca por horario
+Agendamento *buscarBST(Agendamento *raiz, Agendamento *horario) {
+    if (raiz == NULL || strcmp(raiz->horario, horario) == 0) {
+        return raiz;
+    }
+    if (strcmp(horario, raiz->horario) < 0){
+        return buscarBST(raiz->esq, horario);
+    } else {
+        return buscarBST(raiz->dir, horario);
+    }
+}
+
 //Função para verificar se o horario esta ocupado
 int verificarAgenda(char *horario) {
     Agendamento *agenda = cliente; //aponta para o inicio da lista
