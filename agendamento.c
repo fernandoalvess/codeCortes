@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define TAMANHO_TABELA 100
+
 
 typedef struct {
     char *nome;
