@@ -29,7 +29,7 @@ int funcaoHash(char *nome) {
     return hash % TAMANHO_TABELA;
 }
 
-//Função para inseriri na tabela hash
+//Função para inserir na tabela hash
 void inserirHash(Agendamento *novoAgendamento) {
     int j = funcaoHash(novoAgendamento -> nome);
     tabelaHash[j] = novoAgendamento;
