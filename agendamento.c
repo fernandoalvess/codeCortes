@@ -4,14 +4,20 @@
 
 #define TAMANHO_TABELA 100
 
-
-typedef struct {
+// estrutura do agendamento
+typedef struct Agendamento {
     char *nome;
     char *horario; //hh:mm
     struct Agendamento *proximo; // ponteiro para prox agendamento
+    struct Agendamento *esq, *dir; // nós da arvore bionaria de busca
 }Agendamento;
 
-Agendamento *cliente = NULL; // ponteiro global para o inicio da lista
+//tabela hash
+Agendamento *tabelaHash[TAMANHO_TABELA];
+
+// variaveis globais
+Agendamento *cliente = NULL; // ponteiro global para o inicio da lista encadeadaa
+Agendamento *raiz = NULL; // arvore binaria de busca
 int totalAgendamento = 0;
 
 //Função para verificar se o horario esta ocupado
