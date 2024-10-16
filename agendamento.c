@@ -5,82 +5,99 @@
 #define TAMANHO_TABELA 100
 
 // estrutura do agendamento
-typedef struct Agendamento {
+typedef struct Agendamento
+{
     char *nome;
-    char *horario; //hh:mm
-    struct Agendamento *proximo; // ponteiro para prox agendamento
+    char *horario;                 // hh:mm
+    struct Agendamento *proximo;   // ponteiro para prox agendamento
     struct Agendamento *esq, *dir; // nós da arvore bionaria de busca
-}Agendamento;
+} Agendamento;
 
-//tabela hash
+// tabela hash
 Agendamento *tabelaHash[TAMANHO_TABELA];
 
 // variaveis globais
 Agendamento *cliente = NULL; // ponteiro global para o inicio da lista encadeadaa
-Agendamento *raiz = NULL; // arvore binaria de busca
+Agendamento *raiz = NULL;    // arvore binaria de busca
 int totalAgendamento = 0;
 
 // Função hash para inserir na tabela
-int funcaoHash(char *nome) {
+int funcaoHash(char *nome)
+{
     int hash = 0;
-    for (int i = 0; nome[i] != '\0'; i++) {
+    for (int i = 0; nome[i] != '\0'; i++)
+    {
         hash += nome[i];
     }
     return hash % TAMANHO_TABELA;
 }
 
-//Função para inserir na tabela hash
-void inserirHash(Agendamento *novoAgendamento) {
-    int j = funcaoHash(novoAgendamento -> nome);
+// Função para inserir na tabela hash
+void inserirHash(Agendamento *novoAgendamento)
+{
+    int j = funcaoHash(novoAgendamento->nome);
     tabelaHash[j] = novoAgendamento;
 }
 
 // Busca na tabela hash
-Agendamento *buscarHash(char *nome) {
+Agendamento *buscarHash(char *nome)
+{
     int j = funcaoHash(nome);
     return tabelaHash[j];
 }
 
 // Para inserir na arvore binaria de busca por horario
-Agendamento *inserirBST(Agendamento *raiz, Agendamento *novoAgendamento) {
-    if (raiz == NULL) {
+Agendamento *inserirBST(Agendamento *raiz, Agendamento *novoAgendamento)
+{
+    if (raiz == NULL)
+    {
         return novoAgendamento;
     }
-    if (strcmp(novoAgendamento->horario, raiz->horario) < 0){
+    if (strcmp(novoAgendamento->horario, raiz->horario) < 0)
+    {
         raiz->esq = inserirBST(raiz->esq, novoAgendamento);
-    } else {
+    }
+    else
+    {
         raiz->dir = inserirBST(raiz->dir, novoAgendamento);
     }
     return raiz;
 }
 
 // Busca na arvore binaria de busca por horario
-Agendamento *buscarBST(Agendamento *raiz, Agendamento *horario) {
-    if (raiz == NULL || strcmp(raiz->horario, horario) == 0) {
+Agendamento *buscarBST(Agendamento *raiz, Agendamento *horario)
+{
+    if (raiz == NULL || strcmp(raiz->horario, horario) == 0)
+    {
         return raiz;
     }
-    if (strcmp(horario, raiz->horario) < 0){
+    if (strcmp(horario, raiz->horario) < 0)
+    {
         return buscarBST(raiz->esq, horario);
-    } else {
+    }
+    else
+    {
         return buscarBST(raiz->dir, horario);
     }
 }
 
-//Função para verificar se o horario esta ocupado usando BST
-int verificarAgenda(char *horario) {
+// Função para verificar se o horario esta ocupado usando BST
+int verificarAgenda(char *horario)
+{
     return buscarBST(raiz, horario) == NULL; // esta disponivel se não encontrar no BST
 }
 
-//Função para agendar novo corte
-void agendar() {
-    Agendamento *novoAgendamento = (Agendamento*)malloc(sizeof(Agendamento));
+// Função para agendar novo corte
+void agendar()
+{
+    Agendamento *novoAgendamento = (Agendamento *)malloc(sizeof(Agendamento));
 
-    //para alocar nome e horario
-    novoAgendamento->nome = (char *)malloc(50 * sizeof (char));
-    novoAgendamento->horario = (char *)malloc(6 * sizeof (char));
+    // para alocar nome e horario
+    novoAgendamento->nome = (char *)malloc(50 * sizeof(char));
+    novoAgendamento->horario = (char *)malloc(6 * sizeof(char));
     novoAgendamento->proximo = novoAgendamento->esq = novoAgendamento->dir = NULL;
 
-    //variavel temporaria
+    // variavel temporaria
     char nomeTemp[50];
     char horarioTemp[6];
 
@@ -91,32 +108,36 @@ void agendar() {
     scanf("%5s", horarioTemp);
 
     // para verificar se o hoarario esta livre usando BST
-    if ( verificarAgenda(horarioTemp)){
-        //copia para as pocições corretas
+    if (verificarAgenda(horarioTemp))
+    {
+        // copia para as pocições corretas
         strcpy(novoAgendamento->nome, nomeTemp);
         strcpy(novoAgendamento->horario, horarioTemp);
 
-        //inserir na lista encadeada
-        novoAgendamento->proximo = cliente; //vai inserir novo agendamento
-        cliente = novoAgendamento; // atualiza a lista encadeada
-        //inserir na arvore binaria de busca
+        // inserir na lista encadeada
+        novoAgendamento->proximo = cliente; // vai inserir novo agendamento
+        cliente = novoAgendamento;          // atualiza a lista encadeada
+        // inserir na arvore binaria de busca
         raiz = inserirBST(raiz, novoAgendamento);
-        //inserir na tela hash
+        // inserir na tela hash
         inserirHash(novoAgendamento);
         totalAgendamento++;
         printf("Agendamento foi realizado!\n");
-    } else {
+    }
+    else
+    {
         printf("Ops! Esse horario nao esta disponivel :(\n");
         free(novoAgendamento->nome);
         free(novoAgendamento->horario);
         free(novoAgendamento);
     }
-
 }
 
-//Funçaõ para exibir agendamentos
-void cortesAgendados() {
-    if (totalAgendamento == 0) {
+// Funçaõ para exibir agendamentos
+void cortesAgendados()
+{
+    if (totalAgendamento == 0)
+    {
         printf("Por enquanto, todos os horarios estao disponiveis!\n");
         return;
     }
@@ -132,9 +153,11 @@ void cortesAgendados() {
     }
 }
 
-//Função para alterar horario
-void alterarHorario() {
-    if (totalAgendamento == 0) {
+// Função para alterar horario
+void alterarHorario()
+{
+    if (totalAgendamento == 0)
+    {
         printf("Sem agendamentos para alterar!\n");
         return;
     }
@@ -145,28 +168,36 @@ void alterarHorario() {
     printf("Digite o nome do cliente: ");
     scanf("%49s", nome);
 
-    //Busca na tabela hash pelo nome
+    // Busca na tabela hash pelo nome
     Agendamento *agenda = buscarHash(nome);
 
-    if(agenda != NULL) {
+    if (agenda != NULL)
+    {
         printf("Digite o novo horario: \n");
         scanf("%5s", novoHorario);
 
-        if (verificarAgenda(novoHorario)) {
-            //altera o horário
+        if (verificarAgenda(novoHorario))
+        {
+            // altera o horário
             strcpy(agenda->horario, novoHorario);
             printf("O horario foi alterado com sucesso!\n");
-        } else {
+        }
+        else
+        {
             printf("Ops! Esse horario nao esta disponivel :(\n");
         }
-    } else {
+    }
+    else
+    {
         printf("Nenhum agendamento encontrado com esse nome!\n");
     }
 }
 
-//Função para cancelar agendamento
-void cancelarAgendamento() {
-    if (totalAgendamento == 0) {
+// Função para cancelar agendamento
+void cancelarAgendamento()
+{
+    if (totalAgendamento == 0)
+    {
         printf("Sem agendamentos para cancelar!\n");
         return;
     }
@@ -175,36 +206,44 @@ void cancelarAgendamento() {
     printf("Digite o nome do cliente para cancelar o agendamento:\n");
     scanf("%49s", nome);
 
-    //Busca na tabela hash pelo nome
+    // Busca na tabela hash pelo nome
     Agendamento *agenda = buscarHash(nome);
-    if (agenda != NULL) {
-        //Remover da lista encadeada
+    if (agenda != NULL)
+    {
+        // Remover da lista encadeada
         Agendamento *atual = cliente, *anterior = NULL;
-        while (atual != NULL && strcmp(atual->nome, nome) != 0) {
+        while (atual != NULL && strcmp(atual->nome, nome) != 0)
+        {
             anterior = atual;
             atual = atual->proximo;
         }
-        if (anterior == NULL) {
+        if (anterior == NULL)
+        {
             cliente = atual->proximo; // remover do inicio
-        } else {
-            anterior->proximo = atual->proximo; //remover no meio ou fim
+        }
+        else
+        {
+            anterior->proximo = atual->proximo; // remover no meio ou fim
         }
         free(atual->nome);
         free(atual->horario);
         free(atual);
-        
+
         totalAgendamento--;
         printf("Agendamento cancelado com sucesso!\n");
-    } else {
+    }
+    else
+    {
         printf("Nenhum agendamento encontrado com esse nome!\n");
     }
 }
 
-//Função para garantir a liberação da memória antes de finalizar o programa
-void liberarMemoria(){
+// Função para garantir a liberação da memória antes de finalizar o programa
+void liberarMemoria()
+{
     Agendamento *agenda = cliente;
 
-    while (agenda != NULL) 
+    while (agenda != NULL)
     {
         Agendamento *auxiliar = agenda;
         agenda = agenda->proximo;
@@ -212,10 +251,10 @@ void liberarMemoria(){
         free(auxiliar->horario);
         free(auxiliar);
     }
-    
 }
 
-int main() {
+int main()
+{
     int opcao;
 
     do
@@ -250,7 +289,7 @@ int main() {
         case 5:
             printf("Saindo...\n");
             break;
-        
+
         default:
             system("cls");
             printf("Opcao invalida, tente novamente!\n");
@@ -259,5 +298,4 @@ int main() {
 
     liberarMemoria();
     return 0;
-    
 }
