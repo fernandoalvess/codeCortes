@@ -145,34 +145,26 @@ void alterarHorario() {
     printf("Digite o nome do cliente: ");
     scanf("%49s", nome);
 
-    Agendamento *agenda = cliente;
+    //Busca na tabela hash pelo nome
+    Agendamento *agenda = buscarHash(nome);
 
-    while (agenda != NULL) {
-        if(strcmp(agenda->nome, nome) == 0) { //nome encontrado, pede novo horario
-            printf("Digite o novo horario:\n");
-            scanf("%5s", novoHorario);
+    if(agenda != NULL) {
+        printf("Digite o novo horario: \n");
+        scanf("%5s", novoHorario);
 
-            if(verificarAgenda(novoHorario))  {
-                agenda->horario = (char *)realloc(agenda->horario, strlen(novoHorario) +1);
-
-                if (agenda->horario == NULL)
-                {
-                    printf("Erro para alterar horario!!!\n");
-                    return;
-                }
-                
-                strcpy(agenda->horario, novoHorario);
-                printf("O horario foi alterado!\n");
-            } else {
-                printf("Ops! Esse horario nao esta disponivel :(\n");
-            }
-            return;
+        if (verificarAgenda(novoHorario)) {
+            //altera o horário
+            strcpy(agenda->horario, novoHorario);
+            printf("O horario foi alterado com sucesso!\n");
+        } else {
+            printf("Ops! Esse horario nao esta disponivel :(\n");
         }
-        agenda = agenda->proximo;
+    } else {
+        printf("Nenhum agendamento encontrado com esse nome!\n");
     }
-    printf("Nenhum agendamento encontrado com esse nome!\n");
 }
 
+//
 void cancelarAgendamento() {
     if (totalAgendamento == 0) {
         printf("Sem agendamentos para cancelar!\n");
