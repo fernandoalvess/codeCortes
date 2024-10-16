@@ -114,6 +114,7 @@ void agendar() {
 
 }
 
+//Funçaõ para exibir agendamentos
 void cortesAgendados() {
     if (totalAgendamento == 0) {
         printf("Por enquanto, todos os horarios estao disponiveis!\n");
@@ -131,6 +132,7 @@ void cortesAgendados() {
     }
 }
 
+//Função para alterar horario
 void alterarHorario() {
     if (totalAgendamento == 0) {
         printf("Sem agendamentos para alterar!\n");
