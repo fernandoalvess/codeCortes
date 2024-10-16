@@ -164,7 +164,7 @@ void alterarHorario() {
     }
 }
 
-//
+//Função para cancelar agendamento
 void cancelarAgendamento() {
     if (totalAgendamento == 0) {
         printf("Sem agendamentos para cancelar!\n");
@@ -172,36 +172,32 @@ void cancelarAgendamento() {
     }
 
     char nome[50];
-    printf("Digite nome do cliente para cancelar o agendamento:\n");
-    scanf("%s", nome);
+    printf("Digite o nome do cliente para cancelar o agendamento:\n");
+    scanf("%49s", nome);
 
-    Agendamento *agenda = cliente;
-    Agendamento *auxiliar = NULL;
-
-    while (agenda != NULL)
-    {
-        if (strcmp(agenda->nome, nome) == 0) {
-            //encontrou o nome, agora vai remover
-            if (auxiliar == NULL)
-            {
-                cliente = agenda->proximo; // remove topo da lista
-            } else {
-                auxiliar->proximo = agenda->proximo; // remove meio ou fim
-            }
-            free(agenda->nome);
-            free(agenda->horario);
-            free(agenda);
-
-            totalAgendamento--;
-            printf("Agendamento foi cancelado!\n");
-            return;
+    //Busca na tabela hash pelo nome
+    Agendamento *agenda = buscarHash(nome);
+    if (agenda != NULL) {
+        //Remover da lista encadeada
+        Agendamento *atual = cliente, *anterior = NULL;
+        while (atual != NULL && strcmp(atual->nome, nome) != 0) {
+            anterior = atual;
+            atual = atual->proximo;
         }
-        auxiliar = agenda;
-        agenda = agenda->proximo;
+        if (anterior == NULL) {
+            cliente = atual->proximo; // remover do inicio
+        } else {
+            anterior->proximo = atual->proximo; //remover no meio ou fim
+        }
+        free(atual->nome);
+        free(atual->horario);
+        free(atual);
+        
+        totalAgendamento--;
+        printf("Agendamento cancelado com sucesso!\n");
+    } else {
+        printf("Nenhum agendamento encontrado com esse nome!\n");
     }
-    
-    printf("Nenhum agendamento encontrado com esse nome!\n");
-    return;
 }
 
 //Função para garantir a liberação da memória antes de finalizar o programa
