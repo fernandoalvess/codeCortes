@@ -71,12 +71,14 @@ int verificarAgenda(char *horario) {
     return buscarBST(raiz, horario) == NULL; // esta disponivel se não encontrar no BST
 }
 
+//Função para agendar novo corte
 void agendar() {
     Agendamento *novoAgendamento = (Agendamento*)malloc(sizeof(Agendamento));
 
     //para alocar nome e horario
     novoAgendamento->nome = (char *)malloc(50 * sizeof (char));
     novoAgendamento->horario = (char *)malloc(6 * sizeof (char));
+    novoAgendamento->proximo = novoAgendamento->esq = novoAgendamento->dir = NULL;
 
     //variavel temporaria
     char nomeTemp[50];
@@ -88,14 +90,19 @@ void agendar() {
     printf("Horario: ");
     scanf("%5s", horarioTemp);
 
-    // para verificar se o hoarario esta livre
+    // para verificar se o hoarario esta livre usando BST
     if ( verificarAgenda(horarioTemp)){
         //copia para as pocições corretas
         strcpy(novoAgendamento->nome, nomeTemp);
         strcpy(novoAgendamento->horario, horarioTemp);
 
+        //inserir na lista encadeada
         novoAgendamento->proximo = cliente; //vai inserir novo agendamento
         cliente = novoAgendamento; // atualiza a lista encadeada
+        //inserir na arvore binaria de busca
+        raiz = inserirBST(raiz, novoAgendamento);
+        //inserir na tela hash
+        inserirHash(novoAgendamento);
         totalAgendamento++;
         printf("Agendamento foi realizado!\n");
     } else {
