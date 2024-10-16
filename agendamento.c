@@ -41,6 +41,19 @@ Agendamento *buscarHash(char *nome) {
     return tabelaHash[j];
 }
 
+// Para inserir na arvore binaria de busca por horario
+Agendamento *inserirBST(Agendamento *raiz, Agendamento *novoAgendamento) {
+    if (raiz == NULL) {
+        return novoAgendamento;
+    }
+    if (strcmp(novoAgendamento->horario, raiz->horario) < 0){
+        raiz->esq = inserirBST(raiz->esq, novoAgendamento);
+    } else {
+        raiz->dir = inserirBST(raiz->dir, novoAgendamento);
+    }
+    return raiz;
+}
+
 //Função para verificar se o horario esta ocupado
 int verificarAgenda(char *horario) {
     Agendamento *agenda = cliente; //aponta para o inicio da lista
