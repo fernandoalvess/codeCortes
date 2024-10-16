@@ -20,6 +20,15 @@ Agendamento *cliente = NULL; // ponteiro global para o inicio da lista encadeada
 Agendamento *raiz = NULL; // arvore binaria de busca
 int totalAgendamento = 0;
 
+// Função hash para inserir na tabela
+int funcaoHash(char *nome) {
+    int hash = 0;
+    for (int i = 0; nome[i] != '\0'; i++) {
+        hash += nome[i];
+    }
+    return hash % TAMANHO_TABELA;
+}
+
 //Função para verificar se o horario esta ocupado
 int verificarAgenda(char *horario) {
     Agendamento *agenda = cliente; //aponta para o inicio da lista
