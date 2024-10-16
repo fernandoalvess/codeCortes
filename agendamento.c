@@ -66,18 +66,11 @@ Agendamento *buscarBST(Agendamento *raiz, Agendamento *horario) {
     }
 }
 
-//Função para verificar se o horario esta ocupado
+//Função para verificar se o horario esta ocupado usando BST
 int verificarAgenda(char *horario) {
-    Agendamento *agenda = cliente; //aponta para o inicio da lista
-    while (agenda != NULL) { //pecorre a lista de agendamento
-        if( strcmp (agenda->horario, horario) == 0) { //comparando o horario
-            return 0; // horario ocupado
-        }
-        agenda = agenda->proximo; // passa para o prox agendamento
-    }
-
-    return 1; // horario disponivel
+    return buscarBST(raiz, horario) == NULL; // esta disponivel se não encontrar no BST
 }
+
 void agendar() {
     Agendamento *novoAgendamento = (Agendamento*)malloc(sizeof(Agendamento));
 
