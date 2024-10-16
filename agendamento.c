@@ -35,6 +35,12 @@ void inserirHash(Agendamento *novoAgendamento) {
     tabelaHash[j] = novoAgendamento;
 }
 
+// Busca na tabela hash
+Agendamento *buscarHash(char *nome) {
+    int j = funcaoHash(nome);
+    return tabelaHash[j];
+}
+
 //Função para verificar se o horario esta ocupado
 int verificarAgenda(char *horario) {
     Agendamento *agenda = cliente; //aponta para o inicio da lista
