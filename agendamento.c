@@ -29,6 +29,12 @@ int funcaoHash(char *nome) {
     return hash % TAMANHO_TABELA;
 }
 
+//Função para inseriri na tabela hash
+void inserirHash(Agendamento *novoAgendamento) {
+    int j = funcaoHash(novoAgendamento -> nome);
+    tabelaHash[j] = novoAgendamento;
+}
+
 //Função para verificar se o horario esta ocupado
 int verificarAgenda(char *horario) {
     Agendamento *agenda = cliente; //aponta para o inicio da lista
